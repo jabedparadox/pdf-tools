@@ -3,7 +3,7 @@
 
 
 ## How it works
-[![gif]()](https://drive.google.com/file/d/13Hxq_PHvEszXMy5AiKS1JPTZvcr7twyG/view?usp=sharing)
+[![gif](https://drive.google.com/file/d/1yi_j1KHGIm00kzhBcOOJrt8HiL93kKQG/view?usp=sharing)](https://drive.google.com/file/d/13Hxq_PHvEszXMy5AiKS1JPTZvcr7twyG/view?usp=sharing)
 
 
 ## Operating System  
