@@ -1,0 +1,241 @@
+<!doctype html>
+
+<title>Pdf Tools</title>
+<script src="{{url_for('static', filename='js/pdfobject.js')}}"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+<style>
+.pdfobject-container { height: 30rem; border: 1rem solid rgba(0,0,0,.1); }
+
+</style>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 40%;
+  padding: 40px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+<body style=" padding: 80px; ">
+<a href="https://github.com/jabedparadox/pdf-tools"><h5>Pdf Tools</h5></a>
+<p>Prepared : <a href="https://github.com/jabedparadox/">Jabed</a> </p>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Reader</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Converter</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Split pages</button>
+  </li>
+    <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact_-tab" data-bs-toggle="tab" data-bs-target="#contact_" type="button" role="tab" aria-controls="contact_" aria-selected="false">Append</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab" style=" padding: 30px; ">
+	    <h2>Select pdf file to upload</h2>
+	<!---<p>
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+			<ul>
+			{% for message in messages %}
+			  <li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		  {% endif %}
+		{% endwith %}
+	</p>-->
+	{% if filename %}
+		<div>
+			<img src="{{ url_for('display_image', filename=filename) }}">
+			
+			
+		</div>
+	{% endif %}
+
+	<form method="post" action="/" enctype="multipart/form-data">
+	    <dl>
+			<p>
+				<input type="file" name="file" id="file" autocomplete="off" required>
+			</p>
+	    </dl>
+	    <p>
+			<input type="submit" value="Submit">
+		</p>
+	</form>
+	<div id="pdf"></div>
+
+   </div>
+  <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab"  style=" padding: 30px; ">
+       <h3>Select pdf file to convert (pdf to docx,text,html,image)</h3>
+  	<form method="post" action="/convert" enctype="multipart/form-data">
+	    <dl>
+			<p>
+				<input type="file" name="file" id="file" autocomplete="off" required>
+			</p>
+	    </dl>
+	      <h3>Select</h3>
+			<select name="select">
+			  <option value="word"> Microsoft Word</option>
+			  <option value="txt"> text</option>
+			  <option value="html">html</option>
+			  <option value="img">Image</option>
+			</select>
+	    <p>
+			<input type="submit" value="Convert" style=" margin-top: 40px; ">
+		</p>
+	</form>
+	
+		{% if select_== "word" %}
+		<div>
+			
+			<li><a href="{{  url_for('convert_pdf_docx', docx_file_nm=docx_file_nm)  }}">{{docx_file_nm}}</a></li>
+                       
+			
+		</div>
+	       {% endif %}
+	        {% if select_== "txt" %}
+		<div>
+			
+			<li><a href="{{  url_for('convert_pdf_txt', text_file_nm=text_file_nm)  }}">{{text_file_nm}}</a></li>
+                       
+			
+		</div>
+	       {% endif %}
+	       {% if select_== "html" %}
+		<div>
+			
+			<li><a href="{{  url_for('convert_pdf_html', html_file_nm=html_file_nm)  }}">{{html_file_nm}}</a></li>
+                       
+			
+		</div>
+	       {% endif %}
+	        {% if select_== "img" %}
+		<div>
+			{% for images_nm_ in images_nm %}
+			<li><a href="{{  url_for('convert_pdf_img', images_nm=images_nm_)  }}">{{images_nm_}}</a></li>
+                       {% endfor %}
+			
+		</div>
+	       {% endif %}
+
+
+
+  </div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"  style=" padding: 30px; ">
+   <h2>Select pdf file to upload</h2>
+	<!---<p>
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+			<ul>
+			{% for message in messages %}
+			  <li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		  {% endif %}
+		{% endwith %}
+	</p>-->
+        <form method="post" action="/split" enctype="multipart/form-data">
+	    <dl>
+			<p>
+				<input type="file" name="file" id="file_" autocomplete="off" required onchange="pdf_page_count();">
+				<div id="pdf_pages"></div>
+			</p>
+	    </dl>
+	    <p>
+	                       <label for="pagno">Page No. </label>
+                               <input class="form-control" type="number" id="pdfpg" name="pageno" placeholder="Enter page no. eg: singel page: 5 & range: 5-10 & 5,10" pattern="[0-9,-]*$" title="eg: singel page: 5 & range: 5-10" required>
+            </p>
+	    <p>
+			        <input type="submit" value="Submit">
+		</p>
+	</form>
+	{% if output_filename %}
+		<div>
+			
+			<li><a href="{{  url_for('split_pdf', output_filename=output_filename)  }}">{{output_filename}}</a></li>
+                       
+			
+		</div>
+	       {% endif %}
+
+  </div>
+      <div class="tab-pane fade" id="contact_" role="tabpanel" aria-labelledby="contact_-tab"  style=" padding: 30px; ">
+        	    <h2>Select pdf file to append multiple pdf</h2>
+        	
+	<!---<p>
+		{% with messages = get_flashed_messages() %}
+		  {% if messages %}
+			<ul>
+			{% for message in messages %}
+			  <li>{{ message }}</li>
+			{% endfor %}
+			</ul>
+		  {% endif %}
+		{% endwith %}
+	</p>-->
+	
+        <form method="post" action="/append" enctype="multipart/form-data">
+	    <dl>
+			<p>
+				<input type="file" name="files" id="files" autocomplete="off" required multiple="multiple">
+			</p>
+	    </dl>
+	    <p>
+			        <input type="submit" value="Submit">
+		</p>
+	</form>
+	{% if append_file_nm %}
+		<div>
+			
+			<li><a href="{{  url_for('append_pdf', append_file_nm=append_file_nm)  }}">{{append_file_nm}}</a></li>
+                       
+			
+		</div>
+	       {% endif %}
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script>
+var img = document.getElementsByTagName("img").item(0);
+var url = img.src
+var elemtagname = document.getElementsByTagName("img");
+elemtagname[0].remove();
+PDFObject.embed(url, "#pdf");
+
+</script>
+<script>
+        function pdf_page_count() {
+            var input = document.getElementById("file_");
+            var fReader = new FileReader();
+            fReader.readAsBinaryString(input.files[0]);
+            console.log(input.files[0]);
+            fReader.onloadend = function (event) {
+                var count = fReader.result.match(/\/Type[\s]*\/Page[^s]/g).length;
+                html_ = 'Total number of Pages:'+count;
+                document.getElementById ("pdf_pages").innerHTML = html_;
+                var element = document.getElementById("pdfpg");
+                element.setAttribute("max", count);
+            }
+        }
+
+</script>
+</body></html>
+
+
+
