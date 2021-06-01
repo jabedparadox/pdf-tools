@@ -3,7 +3,7 @@
 
 
 ## How it works
-[![gif](https://drive.google.com/file/d/1yi_j1KHGIm00kzhBcOOJrt8HiL93kKQG/view?usp=sharing)](https://drive.google.com/file/d/13Hxq_PHvEszXMy5AiKS1JPTZvcr7twyG/view?usp=sharing)
+[![gif](https://github.com/jabedparadox/pdf-tools/blob/master/Screencast%20from%201-6-21%2002_56_05%20%E0%A6%AA%E0%A7%82%E0%A6%B0%E0%A7%8D%E0%A6%AC%E0%A6%BE%E0%A6%B9%E0%A7%8D%E0%A6%A3%20%2B06.gif)](https://drive.google.com/file/d/13Hxq_PHvEszXMy5AiKS1JPTZvcr7twyG/view?usp=sharing)
 
 
 ## Operating System  
